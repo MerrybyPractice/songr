@@ -1,5 +1,27 @@
 # Songr 
 
+## Album Routes 
+    
+    - Create Album: 
+        /Album/create 
+        On this route, you can pass in the information necessary for an album and this route will save it to the database.
+         
+    - Update Album: 
+        /Album/update/{album id} 
+        This route will find the specified album and update it with the new information. 
+        
+    - Get Albums: 
+        /Album/All
+        This route displays all stored albums. 
+    
+    - Get Album: 
+        /Album/album/{album id}
+        This route will display the album stored at the specified id. 
+        
+    - Delete Album 
+        /Album/delete/{album id}
+        This route will delete the album stored at the specified id. 
+
 ## Test Routes 
     
     - Hello World: 

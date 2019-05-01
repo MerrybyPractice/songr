@@ -22,7 +22,7 @@ public class AlbumController {
         return album;
     }
 
-    //update an exsisting album, currently throws an unhandled exception
+    //update an existing album, currently throws an unhandled exception
     @PutMapping("/update/{id}")
     public Album updateAlbum(@PathVariable long id, @RequestBody Album album) throws AlbumNotFoundException {
         Optional<Album> repoAlbum = this.repo.findById(id);
@@ -63,7 +63,7 @@ public class AlbumController {
 
     //delete a single album based on id
     @DeleteMapping("/delete/{id}")
-    public void deleteBug(@PathVariable Long id){
+    public void deleteAlbum(@PathVariable Long id){
         this.repo.deleteById(id);
     }
 
