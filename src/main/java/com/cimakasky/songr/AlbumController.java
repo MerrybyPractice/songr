@@ -64,8 +64,9 @@ public class AlbumController {
 
     //return a single album in repository
     @GetMapping("/album/{id}")
-    public Album getAlbum(@PathVariable long id) throws AlbumNotFoundException {
+    public Album getAlbum(@PathVariable long id, Model model) throws AlbumNotFoundException {
         Optional<Album> album = this.repo.findById(id);
+        model.addAttribute("album", album);
         if(album.isPresent()){
             return album.get();
         } else {
