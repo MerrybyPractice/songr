@@ -18,9 +18,19 @@
         /Album/album/{album id}
         This route will display the album stored at the specified id. 
         
-    - Delete Album 
+    - Delete Album: 
         /Album/delete/{album id}
         This route will delete the album stored at the specified id. 
+
+## Song Routes 
+    - Create Song: 
+        This route is accessed when a form is submitted to create a song. It will not display, and redirects to the specific album the song belongs on. 
+        
+    - Update Song: 
+        This route allows you to update a song. It is not currently connected to anything. 
+    
+    - Get Songs: 
+        This will display all songs, and shows the form to create a song. 
 
 ## Test Routes 
     

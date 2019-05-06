@@ -3,23 +3,34 @@ package com.cimakasky.songr;
 import com.cimakasky.songr.database.Album;
 import com.cimakasky.songr.database.AlbumRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
+import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequestMapping("/Album")
 public class AlbumController {
 
     @Autowired
     AlbumRepository repo;
 
-
     //create single album
     @PostMapping("/create")
-    public Album createAlbum(@RequestBody Album album){
+    public RedirectView createAlbum(@RequestParam String title, @RequestParam String artist, @RequestParam int songCount,
+            @RequestParam long length, @RequestParam URL imageURL){
+        Album album = new Album();
+        album.title = title;
+        album.artist = artist;
+        album.songCount = songCount;
+        album.length = length;
+        album.imageURL = imageURL;
         album = this.repo.save(album);
-        return album;
+        return new RedirectView("/Album/All");
     }
 
     //update an existing album, currently throws an unhandled exception
@@ -45,15 +56,17 @@ public class AlbumController {
 
     //return all albums in repository
     @GetMapping("/All")
-    public Iterable<Album> getAlbums(){
-        Iterable<Album> albums = this.repo.findAll();
-        return albums;
+    public String getAlbums(Model model){
+        List<Album> albums = this.repo.findAll();
+        model.addAttribute("album", albums);
+        return "album";
     }
 
     //return a single album in repository
     @GetMapping("/album/{id}")
-    public Album getAlbum(@PathVariable long id) throws AlbumNotFoundException {
+    public Album getAlbum(@PathVariable long id, Model model) throws AlbumNotFoundException {
         Optional<Album> album = this.repo.findById(id);
+        model.addAttribute("album", album);
         if(album.isPresent()){
             return album.get();
         } else {

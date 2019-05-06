@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:href="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title> Song </title>
+</head>
+<body>
+<div>
+    <section th:value="${album.id}"hidden>
+        <div th:text="${album.title}"></div>
+        <div th:text="${album.artist}"></div>
+        <div th:text="${album.songCount}"></div>
+        <div th:text="${album.length}"></div>
+        <img th:href="${album.imageURL}">
+        <div th:each="song: ${songs}">
+            <div th:text="${song.title}"></div>
+        </div>
+    </section>
+
+
+</div>
+
+</body>
+</html>

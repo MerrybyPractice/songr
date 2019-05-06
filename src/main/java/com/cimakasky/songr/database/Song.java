@@ -3,24 +3,21 @@ package com.cimakasky.songr.database;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import java.net.URL;
-import java.util.List;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Album {
+public class Song {
 
     @Id
     @GeneratedValue
     public long id;
 
     public String title;
-    public String artist;
-    public int songCount;
     public long length;
-    public URL imageURL;
+    public int trackNumber;
 
-    @OneToMany(mappedBy="album")
-    List<Song> songs;
+    @ManyToOne
+    public Album album;
+
 
 }
