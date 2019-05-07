@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/Album")
+@RequestMapping("/albums")
 public class AlbumController {
 
     @Autowired
@@ -21,8 +21,11 @@ public class AlbumController {
 
     //create single album
     @PostMapping("/create")
-    public RedirectView createAlbum(@RequestParam String title, @RequestParam String artist, @RequestParam int songCount,
-            @RequestParam long length, @RequestParam URL imageURL){
+    public RedirectView createAlbum(@RequestParam String title,
+                                    @RequestParam String artist,
+                                    @RequestParam int songCount,
+                                    @RequestParam long length,
+                                    @RequestParam URL imageURL) {
         Album album = new Album();
         album.title = title;
         album.artist = artist;
@@ -30,15 +33,16 @@ public class AlbumController {
         album.length = length;
         album.imageURL = imageURL;
         album = this.repo.save(album);
-        return new RedirectView("/Album/All");
+        return new RedirectView("/albums/all");
     }
 
     //update an existing album, currently throws an unhandled exception
-    @PutMapping("/update/{id}")
-    public Album updateAlbum(@PathVariable long id, @RequestBody Album album) throws AlbumNotFoundException {
+    @PostMapping("/update/{id}")
+    public RedirectView updateAlbum(@PathVariable long id,
+                                    @RequestBody Album album) {
         Optional<Album> repoAlbum = this.repo.findById(id);
 
-        if(repoAlbum.isPresent()){
+        if (repoAlbum.isPresent()) {
             Album foundAlbum = repoAlbum.get();
 
             foundAlbum.title = album.title;
@@ -48,15 +52,14 @@ public class AlbumController {
             foundAlbum.imageURL = album.imageURL;
 
             foundAlbum = this.repo.save(foundAlbum);
-            return foundAlbum;
+            return new RedirectView("/albums/album" + album.id);
         }
-
         throw new AlbumNotFoundException();
     }
 
     //return all albums in repository
-    @GetMapping("/All")
-    public String getAlbums(Model model){
+    @GetMapping("/all")
+    public String getAlbums(Model model) {
         List<Album> albums = this.repo.findAll();
         model.addAttribute("album", albums);
         return "album";
@@ -64,11 +67,11 @@ public class AlbumController {
 
     //return a single album in repository
     @GetMapping("/album/{id}")
-    public Album getAlbum(@PathVariable long id, Model model) throws AlbumNotFoundException {
+    public String getAlbum(@PathVariable long id, Model model) {
         Optional<Album> album = this.repo.findById(id);
-        model.addAttribute("album", album);
-        if(album.isPresent()){
-            return album.get();
+        if (album.isPresent()) {
+            model.addAttribute("album", album.get());
+            return "singleAlbum";
         } else {
             throw new AlbumNotFoundException();
         }
@@ -76,9 +79,7 @@ public class AlbumController {
 
     //delete a single album based on id
     @DeleteMapping("/delete/{id}")
-    public void deleteAlbum(@PathVariable Long id){
+    public void deleteAlbum(@PathVariable Long id) {
         this.repo.deleteById(id);
     }
-
-
 }
